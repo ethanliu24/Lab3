@@ -1,5 +1,6 @@
 package org.translation;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +26,7 @@ public class Main {
         //            you can use it here instead of the InLabByHandTranslator
         //            to try out the whole program!
         // Translator translator = new JSONTranslator(null);
-        Translator translator = new InLabByHandTranslator();
+        Translator translator = new JSONTranslator("sample.json");
 
         runProgram(translator);
     }
@@ -57,10 +58,13 @@ public class Main {
             //            convert it back to its 2-letter language code when calling translate.
             //            Note: you should use the actual names in the message printed below though,
             //            since the user will see the displayed message.
-            System.out.println(country + " in " + language + " is " + translator.translate(country, language));
-            System.out.println("Press enter to continue or quit to exit.");
-            Scanner s = new Scanner(System.in);
-            String textTyped = s.nextLine();
+            // Use the 2-letter language code for translation, but display names to the user
+            String translation = translator.translate(country, language);
+            System.out.println(country + " in " + language + " is: " + translation);
+
+            System.out.println("Press enter to continue or type 'quit' to exit.");
+            Scanner scanner = null;
+            String textTyped = scanner.nextLine();
 
             if (q.equals(textTyped)) {
                 break;
@@ -75,8 +79,14 @@ public class Main {
         //            and print them out; one per line.
         //      hint: class Collections provides a static sort method
         // TODO Task: convert the country codes to the actual country names before sorting
-        System.out.println(countries);
+        // Convert the list of country codes to names and sort alphabetically
+        Collections.sort(countries);
 
+        // Print countries one per line
+        System.out.println("Available countries:");
+        for (String country : countries) {
+            System.out.println(country);
+        }
         System.out.println("select a country from above:");
 
         Scanner s = new Scanner(System.in);
@@ -91,7 +101,15 @@ public class Main {
         //  alphabetically and print them out; one per line
         // TODO Task: convert the language codes to the actual language names
         //  before sorting
-        System.out.println(translator.getCountryLanguages(country));
+        List<String> languages = translator.getCountryLanguages(country);
+
+        // Sort languages alphabetically and print them out
+        Collections.sort(languages);
+
+        System.out.println("Available languages for " + country + ":");
+        for (String language : languages) {
+            System.out.println(language);
+        }
 
         System.out.println("select a language from above:");
 
